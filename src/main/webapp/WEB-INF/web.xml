@@ -1,0 +1,21 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app 
+    id="pundle"
+    version="2.5">
+  <display-name>Pundle</display-name>
+  <taglib>
+      <taglib-uri>pundle</taglib-uri>
+      <taglib-location>/WEB-INF/pundle.tld</taglib-location>
+  </taglib>
+  <servlet>
+      <servlet-name>pundle</servlet-name>
+      <servlet-class>com.pundle.servlet.Pundler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>pundle</servlet-name>
+      <url-pattern>/pundle/*</url-pattern>
+  </servlet-mapping>
+</web-app>
