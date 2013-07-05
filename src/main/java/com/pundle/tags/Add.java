@@ -21,7 +21,7 @@ public class Add extends SimpleTagSupport {
 	
 	final Logger logger = LoggerFactory.getLogger(Add.class);
 	
-	public void doTag() throws JspException {
+	public void doTag() throws JspException, IOException {
 		ServletRequest req = ((PageContext)getJspContext()).getRequest();
 		Bundle bundle = null;
 		if (req.getAttribute(this.name) != null) {
@@ -29,22 +29,26 @@ public class Add extends SimpleTagSupport {
 		} else {
 			bundle = new Bundle(name);
 		}
-		String baseUrl = "";
-		if (!this.href.startsWith("http")) {
-			baseUrl = req.getScheme() + "://" + req.getServerName() +
-					":" + req.getServerPort();
-			if (!this.href.startsWith("/")) { /*add path*/ }
+		if (bundle.isCombine()) {
+			String baseUrl = "";
+			if (!this.href.startsWith("http")) {
+				baseUrl = req.getScheme() + "://" + req.getServerName() +
+						":" + req.getServerPort();
+				if (!this.href.startsWith("/")) { /*add path*/ }
+			}
+			String href = baseUrl + this.href;
+			logger.info(this.name + ", url: " + href);
+			try {
+				bundle.addContent(new URL(href).openStream());
+			} catch (MalformedURLException e) {
+				logger.error("Malformed URL, " + href, e);
+			} catch (IOException e) {
+				logger.error("Failed to retrieve content from URL, " + href, e);
+			}
+			req.setAttribute(this.name, bundle);
+		} else {
+			getJspContext().getOut().write(bundle.getLinkTag(href));
 		}
-		String href = baseUrl + this.href;
-		logger.info(this.name + ", url: " + href);
-		try {
-			bundle.addContent(new URL(href).openStream());
-		} catch (MalformedURLException e) {
-			logger.error("Malformed URL, " + href, e);
-		} catch (IOException e) {
-			logger.error("Failed to retrieve content from URL, " + href, e);
-		}
-		req.setAttribute(this.name, bundle);
 	}
 
 	public void setName(String name) {

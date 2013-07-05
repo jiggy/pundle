@@ -16,18 +16,32 @@ import org.slf4j.LoggerFactory;
 public class Bundle {
 	
 	final Logger logger = LoggerFactory.getLogger(Bundle.class);
+	private boolean combine = false;
+	private boolean minify = false;
 	private Map<String,String> attributes;
 	private String name;
 	private List<byte[]> contents = new LinkedList<byte[]>();
 	private int totalBytes = 0;
 	
-	public Bundle(String name) {
+	public Bundle(String name, String media, String rel, String type, boolean combine, boolean minify) {
 		this.name = name;
+		this.combine = combine;
+		this.minify = minify;
 		attributes = new HashMap<String,String>();
-		attributes.put("rel", "stylesheet");
-		attributes.put("type", "text/css");
+		attributes.put("rel", rel);
+		attributes.put("type", type);
+		attributes.put("media", media);
+		
 	}
-	
+	public Bundle(String name, String media, boolean combine, boolean minify) {
+		this(name, media, "stylesheet", "text/css", combine, minify);
+	}
+	public Bundle(String name, boolean combine, boolean minify) {
+		this(name, "screen", combine, minify);
+	}
+	public Bundle(String name) {
+		this(name, false, false);
+	}
 	private ByteArrayOutputStream getFullOutputStream() throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream(totalBytes);
 		for (byte[] chunk : contents) {
@@ -67,6 +81,18 @@ public class Bundle {
 		return attributes;
 	}
 	
+	public String getLinkTag() throws IOException {
+		return getLinkTag("/pundle/" + getChecksum());
+	}
+	public String getLinkTag(String href) throws IOException {
+		String attrs = "";
+		for (String key : attributes.keySet()) {
+			attrs += key + "=\"" + attributes.get(key) + "\" ";
+		}
+		return "<link rel=\"" + attrs + " href=\"" +
+				href + "\" />";
+	}
+	
 	public String toString() {
 		String out = "";
 		logger.info("Output " + contents.size() + " chunks");
@@ -78,5 +104,17 @@ public class Bundle {
 			}
 		}
 		return out;
+	}
+	public boolean isCombine() {
+		return combine;
+	}
+	public void setCombine(boolean combine) {
+		this.combine = combine;
+	}
+	public boolean isMinify() {
+		return minify;
+	}
+	public void setMinify(boolean minify) {
+		this.minify = minify;
 	}
 }

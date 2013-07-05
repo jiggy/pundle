@@ -4,13 +4,11 @@ taglib prefix="pnd" uri="pundle"
 %><!DOCTYPE html>
 <html>
 <head>
-<pnd:define name="lakfjs" rel="stylesheet" type="text/css" />
-<pnd:define name="bdn2" rel="stylesheet" type="text/css" />
-<pnd:add name="lakfjs" href="/css/styles.css" />
-<pnd:add name="lakfjs" href="/css/styles.css" />
+<pnd:define name="bdn2" rel="stylesheet" combine="true" type="text/css" />
 <pnd:add name="bdn2" href="/css/styles.css" />
+<pnd:add name="bdn2" href="/css/styles2.css" />
 <!--  flush -->
-<pnd:flush name="lakfjs" outfile="foo" />
+<pnd:flush name="bdn2" outfile="foo" />
 </head>
 <body>
 <h2>Hello, World!</h2>

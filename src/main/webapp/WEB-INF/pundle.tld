@@ -22,8 +22,16 @@
   	<attribute>
   		<name>rel</name>
   	</attribute>
-  	  	<attribute>
+ 	<attribute>
   		<name>type</name>
+  	</attribute>
+ 	<attribute>
+ 		<type>Boolean</type>
+  		<name>combine</name>
+  	</attribute>
+ 	<attribute>
+ 		<type>Boolean</type>
+  		<name>minify</name>
   	</attribute>
   </tag>
   <tag>

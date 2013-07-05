@@ -29,8 +29,7 @@ public class Flush extends SimpleTagSupport {
 				getJspContext().getOut().write("<style>" + bundle.toString() + "</style>");
 			} else {
 				String checksum = bundle.getChecksum();
-				getJspContext().getOut().write("<link rel=\"stylesheet\" href=\"/pundle/" +
-						checksum + "\" />");
+				getJspContext().getOut().write(bundle.getLinkTag());
 				Manager.getManager().addBundle(checksum, bundle.geFullContentt());
 			}
 		}
