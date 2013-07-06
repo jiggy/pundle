@@ -5,8 +5,10 @@ taglib prefix="pnd" uri="pundle"
 <html>
 <head>
 <pnd:define name="bdn2" rel="stylesheet" combine="true" type="text/css" />
+<pnd:add name="bdn2" href="https://raw.github.com/jiggy/pundle/master/src/main/webapp/css/styles.css" />
+<pnd:add name="bdn2" href="css/styles2.css" />
 <pnd:add name="bdn2" href="/css/styles.css" />
-<pnd:add name="bdn2" href="/css/styles2.css" />
+<pnd:add name="bdn2" href="//raw.github.com/jiggy/pundle/master/src/main/webapp/css/styles.css" />
 <!--  flush -->
 <pnd:flush name="bdn2" outfile="foo" />
 </head>

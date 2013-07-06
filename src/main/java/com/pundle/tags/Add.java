@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -22,7 +22,7 @@ public class Add extends SimpleTagSupport {
 	final Logger logger = LoggerFactory.getLogger(Add.class);
 	
 	public void doTag() throws JspException, IOException {
-		ServletRequest req = ((PageContext)getJspContext()).getRequest();
+		HttpServletRequest req = (HttpServletRequest) ((PageContext)getJspContext()).getRequest();
 		Bundle bundle = null;
 		if (req.getAttribute(this.name) != null) {
 				bundle = (Bundle) req.getAttribute(this.name);
@@ -30,16 +30,11 @@ public class Add extends SimpleTagSupport {
 			bundle = new Bundle(name);
 		}
 		if (bundle.isCombine()) {
-			String baseUrl = "";
-			if (!this.href.startsWith("http")) {
-				baseUrl = req.getScheme() + "://" + req.getServerName() +
-						":" + req.getServerPort();
-				if (!this.href.startsWith("/")) { /*add path*/ }
-			}
-			String href = baseUrl + this.href;
-			logger.info(this.name + ", url: " + href);
+			URL ctx = new URL(req.getRequestURL().toString());
+			URL target = new URL(ctx, href);
+			logger.info(this.name + ", url: " + target.toString());
 			try {
-				bundle.addContent(new URL(href).openStream());
+				bundle.addContent(target.openStream());
 			} catch (MalformedURLException e) {
 				logger.error("Malformed URL, " + href, e);
 			} catch (IOException e) {
